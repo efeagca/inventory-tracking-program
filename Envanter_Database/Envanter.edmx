@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Envanter.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EnvanterStoreContainer">
+    <EntitySet Name="KULLANICISet" EntityType="Envanter.Store.KULLANICISet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SUBESet1" EntityType="Envanter.Store.SUBESet1" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="URUNSet1" EntityType="Envanter.Store.URUNSet1" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SATISSet" EntityType="Envanter.Store.SATISSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ALIMSet" EntityType="Envanter.Store.ALIMSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="SAHIP" Association="Envanter.Store.SAHIP">
+      <End Role="Kullanici" EntitySet="KULLANICISet" />
+      <End Role="Sube" EntitySet="SUBESet1" />
+    </AssociationSet>
+    <AssociationSet Name="SubeUrun" Association="Envanter.Store.SubeUrun">
+      <End Role="Sube" EntitySet="SUBESet1" />
+      <End Role="Urun" EntitySet="URUNSet1" />
+    </AssociationSet>
+    <AssociationSet Name="SUBEALIM" Association="Envanter.Store.SUBEALIM">
+      <End Role="SUBE" EntitySet="SUBESet1" />
+      <End Role="ALIM" EntitySet="ALIMSet" />
+    </AssociationSet>
+    <AssociationSet Name="SUBESATIS" Association="Envanter.Store.SUBESATIS">
+      <End Role="SUBE" EntitySet="SUBESet1" />
+      <End Role="SATIS" EntitySet="SATISSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="KULLANICISet">
+    <Key>
+      <PropertyRef Name="KullaniciID" />
+    </Key>
+    <Property Name="KullaniciID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KullaniciAdi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Sifre" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SUBESet1">
+    <Key>
+      <PropertyRef Name="SubeId" />
+      <PropertyRef Name="KullaniciID" />
+    </Key>
+    <Property Name="SubeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SubeAdi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="KullaniciID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="URUNSet1">
+    <Key>
+      <PropertyRef Name="Barkod" />
+      <PropertyRef Name="SubeId" />
+      <PropertyRef Name="KullaniciID" />
+    </Key>
+    <Property Name="Barkod" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UrunAdi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UrunCinsi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Birim" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Stok" Type="int" Nullable="false" />
+    <Property Name="Birim_Fiyat" Type="float" Nullable="false" />
+    <Property Name="Aciklama1" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Aciklama2" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Kritik_Stok_Seviyesi" Type="int" Nullable="true" />
+    <Property Name="SubeId" Type="int" Nullable="false" />
+    <Property Name="KullaniciID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SATISSet">
+    <Key>
+      <PropertyRef Name="SatisId" />
+    </Key>
+    <Property Name="SatisId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Barkod" Type="int" Nullable="false" />
+    <Property Name="Miktar" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="SubeId" Type="int" Nullable="false" />
+    <Property Name="KullaniciID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ALIMSet">
+    <Key>
+      <PropertyRef Name="AlimID" />
+    </Key>
+    <Property Name="AlimID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Barkod" Type="int" Nullable="false" />
+    <Property Name="Miktar" Type="int" Nullable="false" />
+    <Property Name="Birim_Alis_Fiyati" Type="float" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="SubeId" Type="int" Nullable="false" />
+    <Property Name="KullaniciID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="SAHIP">
+    <End Role="Kullanici" Type="Envanter.Store.KULLANICISet" Multiplicity="1" />
+    <End Role="Sube" Type="Envanter.Store.SUBESet1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kullanici">
+        <PropertyRef Name="KullaniciID" />
+      </Principal>
+      <Dependent Role="Sube">
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SubeUrun">
+    <End Role="Sube" Type="Envanter.Store.SUBESet1" Multiplicity="1" />
+    <End Role="Urun" Type="Envanter.Store.URUNSet1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sube">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Principal>
+      <Dependent Role="Urun">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SUBEALIM">
+    <End Role="SUBE" Type="Envanter.Store.SUBESet1" Multiplicity="1" />
+    <End Role="ALIM" Type="Envanter.Store.ALIMSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SUBE">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Principal>
+      <Dependent Role="ALIM">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SUBESATIS">
+    <End Role="SUBE" Type="Envanter.Store.SUBESet1" Multiplicity="1" />
+    <End Role="SATIS" Type="Envanter.Store.SATISSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SUBE">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Principal>
+      <Dependent Role="SATIS">
+        <PropertyRef Name="SubeId" />
+        <PropertyRef Name="KullaniciID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Envanter" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="EnvanterContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KULLANICISet" EntityType="Envanter.KULLANICI" />
+          <EntitySet Name="SUBESet1" EntityType="Envanter.SUBE" />
+          <EntitySet Name="URUNSet1" EntityType="Envanter.URUN" />
+          <EntitySet Name="SATISSet" EntityType="Envanter.SATIS" />
+          <EntitySet Name="ALIMSet" EntityType="Envanter.ALIM" />
+          <AssociationSet Name="SAHIP" Association="Envanter.SAHIP">
+            <End Role="Kullanici" EntitySet="KULLANICISet" />
+            <End Role="Sube" EntitySet="SUBESet1" />
+          </AssociationSet>
+          <AssociationSet Name="SubeUrun" Association="Envanter.SubeUrun">
+            <End Role="Sube" EntitySet="SUBESet1" />
+            <End Role="Urun" EntitySet="URUNSet1" />
+          </AssociationSet>
+          <AssociationSet Name="SUBEALIM" Association="Envanter.SUBEALIM">
+            <End Role="SUBE" EntitySet="SUBESet1" />
+            <End Role="ALIM" EntitySet="ALIMSet" />
+          </AssociationSet>
+          <AssociationSet Name="SUBESATIS" Association="Envanter.SUBESATIS">
+            <End Role="SUBE" EntitySet="SUBESet1" />
+            <End Role="SATIS" EntitySet="SATISSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="KULLANICI">
+          <Key>
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciAdi" Type="String" Nullable="false" />
+          <Property Name="Sifre" Type="String" Nullable="false" />
+          <NavigationProperty Name="Sube" Relationship="Envanter.SAHIP" FromRole="Kullanici" ToRole="Sube" />
+        </EntityType>
+        <EntityType Name="SUBE">
+          <Key>
+            <PropertyRef Name="SubeId" />
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="SubeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubeAdi" Type="String" Nullable="false" />
+          <NavigationProperty Name="Kullanici" Relationship="Envanter.SAHIP" FromRole="Sube" ToRole="Kullanici" />
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Urun" Relationship="Envanter.SubeUrun" FromRole="Sube" ToRole="Urun" />
+          <NavigationProperty Name="ALIM" Relationship="Envanter.SUBEALIM" FromRole="SUBE" ToRole="ALIM" />
+          <NavigationProperty Name="SATIS" Relationship="Envanter.SUBESATIS" FromRole="SUBE" ToRole="SATIS" />
+        </EntityType>
+        <EntityType Name="URUN">
+          <Key>
+            <PropertyRef Name="Barkod" />
+            <PropertyRef Name="SubeId" />
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="Barkod" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrunAdi" Type="String" Nullable="false" />
+          <Property Name="UrunCinsi" Type="String" Nullable="false" />
+          <Property Name="Birim" Type="String" Nullable="false" />
+          <Property Name="Stok" Type="Int32" Nullable="false" />
+          <Property Name="Birim_Fiyat" Type="Double" Nullable="false" />
+          <Property Name="Aciklama1" Type="String" Nullable="true" />
+          <Property Name="Aciklama2" Type="String" Nullable="true" />
+          <Property Name="Kritik_Stok_Seviyesi" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="Sube" Relationship="Envanter.SubeUrun" FromRole="Urun" ToRole="Sube" />
+          <Property Name="SubeId" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SATIS">
+          <Key>
+            <PropertyRef Name="SatisId" />
+          </Key>
+          <Property Name="SatisId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barkod" Type="Int32" Nullable="false" />
+          <Property Name="Miktar" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="SUBE" Relationship="Envanter.SUBESATIS" FromRole="SATIS" ToRole="SUBE" />
+          <Property Name="SubeId" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ALIM">
+          <Key>
+            <PropertyRef Name="AlimID" />
+          </Key>
+          <Property Name="AlimID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barkod" Type="Int32" Nullable="false" />
+          <Property Name="Miktar" Type="Int32" Nullable="false" />
+          <Property Name="Birim_Alis_Fiyati" Type="Double" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="SUBE" Relationship="Envanter.SUBEALIM" FromRole="ALIM" ToRole="SUBE" />
+          <Property Name="SubeId" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="SAHIP">
+          <End Type="Envanter.KULLANICI" Role="Kullanici" Multiplicity="1" />
+          <End Type="Envanter.SUBE" Role="Sube" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Sube">
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SubeUrun">
+          <End Type="Envanter.SUBE" Role="Sube" Multiplicity="1" />
+          <End Type="Envanter.URUN" Role="Urun" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sube">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Urun">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SUBEALIM">
+          <End Type="Envanter.SUBE" Role="SUBE" Multiplicity="1" />
+          <End Type="Envanter.ALIM" Role="ALIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBE">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="ALIM">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SUBESATIS">
+          <End Type="Envanter.SUBE" Role="SUBE" Multiplicity="1" />
+          <End Type="Envanter.SATIS" Role="SATIS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SUBE">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="SATIS">
+              <PropertyRef Name="SubeId" />
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EnvanterStoreContainer" CdmEntityContainer="EnvanterContainer">
+    <EntitySetMapping Name="KULLANICISet">
+      <EntityTypeMapping TypeName="IsTypeOf(Envanter.KULLANICI)">
+        <MappingFragment StoreEntitySet="KULLANICISet">
+          <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+          <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+          <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SUBESet1">
+      <EntityTypeMapping TypeName="IsTypeOf(Envanter.SUBE)">
+        <MappingFragment StoreEntitySet="SUBESet1">
+          <ScalarProperty Name="SubeId" ColumnName="SubeId" />
+          <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+          <ScalarProperty Name="SubeAdi" ColumnName="SubeAdi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="URUNSet1">
+      <EntityTypeMapping TypeName="IsTypeOf(Envanter.URUN)">
+        <MappingFragment StoreEntitySet="URUNSet1">
+          <ScalarProperty Name="Barkod" ColumnName="Barkod" />
+          <ScalarProperty Name="SubeId" ColumnName="SubeId" />
+          <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+          <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+          <ScalarProperty Name="UrunCinsi" ColumnName="UrunCinsi" />
+          <ScalarProperty Name="Birim" ColumnName="Birim" />
+          <ScalarProperty Name="Stok" ColumnName="Stok" />
+          <ScalarProperty Name="Birim_Fiyat" ColumnName="Birim_Fiyat" />
+          <ScalarProperty Name="Aciklama1" ColumnName="Aciklama1" />
+          <ScalarProperty Name="Aciklama2" ColumnName="Aciklama2" />
+          <ScalarProperty Name="Kritik_Stok_Seviyesi" ColumnName="Kritik_Stok_Seviyesi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SATISSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Envanter.SATIS)">
+        <MappingFragment StoreEntitySet="SATISSet">
+          <ScalarProperty Name="SatisId" ColumnName="SatisId" />
+          <ScalarProperty Name="Barkod" ColumnName="Barkod" />
+          <ScalarProperty Name="Miktar" ColumnName="Miktar" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="SubeId" ColumnName="SubeId" />
+          <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ALIMSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Envanter.ALIM)">
+        <MappingFragment StoreEntitySet="ALIMSet">
+          <ScalarProperty Name="AlimID" ColumnName="AlimID" />
+          <ScalarProperty Name="Barkod" ColumnName="Barkod" />
+          <ScalarProperty Name="Miktar" ColumnName="Miktar" />
+          <ScalarProperty Name="Birim_Alis_Fiyati" ColumnName="Birim_Alis_Fiyati" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="SubeId" ColumnName="SubeId" />
+          <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
